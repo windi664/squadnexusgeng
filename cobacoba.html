@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksplor Bandung - Portal Informasi Wisata, Mall & PERSIB</title>
+    <style>
+        /* === RESET & VARIABLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #0099ff;
+            --secondary-blue: #0077cc;
+            --dark-color: #0c4292;
+            --light-bg: rgba(255, 255, 255, 0.95);
+            --card-shadow: 0 4px 12px rgba(17, 37, 122, 0.1);
+        }
+
+        /* === DYNAMIC BACKGROUND === */
+        body {
+            background: linear-gradient(-45deg, #5168cf, #0099ff, #4e9bd6, #0099ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #2a8fb8;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* === SIDEBAR / NAVIGATION MENU === */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: var(--dark-color);
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 4px 0 15px rgba(58, 142, 180, 0.5);
+        }
+
+        .sidebar a {
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: var(--primary-blue);
+            color: #fff;
+            padding-left: 35px;
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .menu-icon {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            z-index: 999;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        .menu-icon:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        /* === HEADER === */
+        header {
+            text-align: center;
+            padding: 70px 20px 20px 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(38, 82, 202, 0.6);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* === SEARCH CONTAINER === */
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 650px;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 16px 25px;
+            font-size: 16px;
+            border: 2px solid var(--primary-blue);
+            border-radius: 30px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            outline: none;
+            color: var(--dark-color);
+            background: #fff;
+        }
+
+        .hasil-pencarian {
+            margin-top: 12px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        /* === MAIN CONTENT === */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .kategori-section {
+            background: var(--light-bg);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .kategori-title {
+            font-size: 24px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--primary-blue);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* === GRID SYSTEM === */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* === CARD === */
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .card-content {
+            padding: 18px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        /* === BUTTONS === */
+        .card-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-lihat {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-lihat:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .btn-google {
+            background-color: var(--dark-color);
+            color: white;
+        }
+
+        .btn-google:hover {
+            background-color: #555;
+        }
+
+        /* === MODAL DETAIL === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 650px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-body h2 {
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+
+        .modal-body p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+        }
+
+        .close-btn-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgba(0,0,0,0.6);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* === FOOTER === */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: white;
+            background: rgba(35, 120, 190, 0.7);
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.1rem; }
+            .grid-container { grid-template-columns: 1fr; }
+            .card-buttons { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR NAVIGASI MENU -->
+    <div id="mySidebar" class="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+        <a href="#home" onclick="toggleSidebar()">Halaman Utama</a>
+        <a href="#sejarah" onclick="toggleSidebar()">Sejarah & Ikon Kota</a>
+        <a href="#persib" onclick="toggleSidebar()">PERSIB Bandung</a>
+        <a href="#alam" onclick="toggleSidebar()">Wisata Alam & Rekreasi</a>
+        <a href="#mall" onclick="toggleSidebar()">Mall & Pusat Belanja</a>
+    </div>
+
+    <!-- TOMBOL MENU BUKA SIDEBAR -->
+    <div class="menu-icon" onclick="toggleSidebar()">
+        &#9776; Menu Navigasi
+    </div>
+
+    <!-- HEADER UTAMA -->
+    <header id="home">
+        <h1>Eksplor Kota Bandung</h1>
+        <p>Panduan Lengkap Wisata, Ikon Sejarah, Mall, dan PERSIB Bandung</p>
+    </header>
+
+    <!-- PENCARIAN TEPAT DI TENGAH -->
+    <div class="search-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="filterTempat()" placeholder="Cari tempat wisata, ikon kota, mall, atau Persib...">
+        </div>
+        <div id="hasilPencarian" class="hasil-pencarian"></div>
+    </div>
+
+    <!-- KONTEN UTAMA -->
+    <div class="container">
+
+        <!-- KATEGORI 1: SEJARAH & IKON KOTA -->
+        <div class="kategori-section" id="sejarah">
+            <h2 class="kategori-title">Sejarah & Ikon Kota Bandung</h2>
+            <div class="grid-container">
+
+                <div class="card">
+                    <img src="gedungvivih.jpeg"Gedung Sate" onclick="gambarBesar(this.src, 'Gedung Sate')">
+                    <div class="card-content">
+                        <h2>Gedung Sate</h2>
+                        <p>Ikon utama Kota Bandung berarsitektur Neoklasik dan Art Deco. Berfungsi sebagai kantor Gubernur Jawa Barat dan memiliki museum interaktif.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Gedung Sate', 'gedungvivih.jpeg', 'Gedung Sate dibangun pada tahun 1920. Bangunan ini memiliki ciri khas ornamen 6 tusuk sate di menara sentralnya yang melambangkan 6 juta Gulden biaya pembangunannya.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Gedung+Sate+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="asia.jpeg" alt="Jalan Asia Afrika" onclick="gambarBesar(this.src, 'Jalan Asia Afrika')">
+                    <div class="card-content">
+                        <h2>Jalan Asia Afrika</h2>
+                        <p>Kawasan bersejarah tempat diselenggarakannya Konferensi Asia Afrika (KAA) tahun 1955. Dikelilingi bangunan bersejarah kolonial.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Jalan Asia Afrika', 'asia.jpeg', 'Jalan Asia Afrika adalah titik Nol Kilometer Kota Bandung. Tempat ini menyimpan Museum Konferensi Asia Afrika (Gedung Merdeka) dan Alun-Alun Bandung.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Jalan+Asia+Afrika+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="braga.jpeg" alt="Jalan Braga" onclick="gambarBesar(this.src, 'Jalan Braga')">
+                    <div class="card-content">
+                        <h2>Jalan Braga</h2>
+                        <p>Kawasan pedestrian legendaris berciri khas pertokoan eropa era kolonial. Tempat populer untuk jalan santai dan fotografi.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Jalan Braga','braga.jpeg', 'Jalan Braga adalah pusat mode dan hiburan di era kolonial Belanda. Saat ini Braga dipenuhi cafe estetis, galeri lukisan jalanan, serta Restoran Klasik.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Jalan+Braga+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="saung.jpeg" alt="Saung Angklung Udjo" onclick="gambarBesar(this.src, 'Saung Angklung Udjo')">
+                    <div class="card-content">
+                        <h2>Saung Angklung Udjo</h2>
+                        <p>Pusat pelestarian dan pertunjukan seni budaya tradisional Sunda, khususnya alat musik bambu angklung.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Saung Angklung Udjo', 'saung.jpeg', 'Didirikan oleh Udjo Ngalagena pada 1966. Menampilkan pertunjukan bambu, tarian tradisional, serta edukasi cara memainkan alat musik angklung.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Saung+Angklung+Udjo+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- KATEGORI 2: PERSIB BANDUNG -->
+        <div class="kategori-section" id="persib">
+            <h2 class="kategori-title">PERSIB Bandung & Olahraga</h2>
+            <div class="grid-container">
+
+                <div class="card">
+                    <img src="persib.jpeg" alt="PERSIB Bandung" onclick="gambarBesar(this.src, 'PERSIB Bandung')">
+                    <div class="card-content">
+                        <h2>PERSIB Bandung (Pangeran Biru)</h2>
+                        <p>Klub sepak bola kebanggaan masyarakat Bandung & Jawa Barat yang berdiri sejak 1933 dengan basis pendukung (Bobotoh) terbesar.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('PERSIB Bandung', 'persib.jpeg', 'PERSIB merupakan klub raksasa sepak bola Indonesia dengan raihan berbagai gelar juara nasional Liga Indonesia. Julukan klub ini adalah Pangeran Biru dan Maung Bandung.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=PERSIB+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="gbla.jpeg" alt="Stadion Gelora Bandung Lautan Api" onclick="gambarBesar(this.src, 'Stadion GBLA')">
+                    <div class="card-content">
+                        <h2>Stadion GBLA</h2>
+                        <p>Stadion megah berkapasitas 38.000 penonton di Gedebage, tempat kandang utama pertandingan PERSIB Bandung.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Stadion Gelora Bandung Lautan Api (GBLA)''gbla.jpeg',  'Stadion Gelora Bandung Lautan Api (GBLA) adalah stadion standar internasional lokasi pertandingan bergengsi PERSIB. Dilengkapi fasilitas olahraga modern.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Stadion+GBLA+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="sili.jpeg" alt="Stadion Sidolig" onclick="gambarBesar(this.src, 'Sidolig Bandung')">
+                    <div class="card-content">
+                        <h2>Stadion Sidolig & Siliwangi</h2>
+                        <p>Pusat latihan bersejarah PERSIB di jantung Kota Bandung yang telah direnovasi menggunakan rumput sintetis standar FIFA.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Stadion Sidolig & Siliwangi', 'sili.jpeg', 'Stadion Sidolig (Stadion PERSIB) merupakan tempat latihan resmi tim PERSIB. Memiliki nilai historis tinggi bagi perkembangan sepak bola Kota Bandung.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Stadion+Sidolig+PERSIB+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- KATEGORI 3: WISATA ALAM & REKREASI -->
+        <div class="kategori-section" id="alam">
+            <h2 class="kategori-title">Wisata Alam & Rekreasi</h2>
+            <div class="grid-container">
+
+                <div class="card">
+                    <img src="kawahr.jpeg" alt="Kawah Putih Ciwidey" onclick="gambarBesar(this.src, 'Kawah Putih Ciwidey')">
+                    <div class="card-content">
+                        <h2>Kawah Putih Ciwidey</h2>
+                        <p>Danau kawah vulkanik berwarna hijau toska unik di kawasan Ciwidey, Bandung Selatan yang dikelilingi hutan kabut eksotis.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Kawah Putih Ciwidey', 'kawahr.jpeg', 'Terbentuk dari letusan Gunung Patuha, Kawah Putih Ciwidey terkenal dengan air danau berpendar yang dapat berubah warna sesuai kondisi iklim dan kandungan belerang.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Kawah+Putih+Ciwidey+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="tangkuban.jpeg" alt="Tangkuban Parahu" onclick="gambarBesar(this.src, 'Tangkuban Parahu')">
+                    <div class="card-content">
+                        <h2>Gunung Tangkuban Parahu</h2>
+                        <p>Gunung berapi aktif legendaris di Lembang dengan Kawah Ratu yang luas serta pemandangan alam memukau.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Gunung Tangkuban Parahu', 'tangkuban.jpeg', 'Gunung Tangkuban Parahu berada di ketinggian 2.084 mdpl. Erat kaitannya dengan legenda Sangkuriang. Destinasi ini menawarkan panorama kawah belerang yang mempesona.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Tangkuban+Parahu+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="cikole.jpeg" alt="Orchid Forest Cikole" onclick="gambarBesar(this.src, 'Orchid Forest')">
+                    <div class="card-content">
+                        <h2>Orchid Forest Cikole</h2>
+                        <p>Taman konservasi anggrek terbesar di Indonesia yang berada di tengah rimbunnya hutan pinus sejuk daerah Lembang.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Orchid Forest Cikole', 'cikole.jpeg', 'Orchid Forest Cikole memiliki koleksi ratusan jenis anggrek langka, jembatan gantung Wood Bridge, arena outbound, serta kawasan santai keluarga.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Orchid+Forest+Cikole+Lembang" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="situ.jpeg" alt="Situ Patenggang & Rancabali" onclick="gambarBesar(this.src, 'Situ Patenggang')">
+                    <div class="card-content">
+                        <h2>Situ Patenggang & Rancabali</h2>
+                        <p>Danau alami di tengah hamparan kebun teh Ciwidey yang asri, terkenal dengan spot legenda Batu Cinta dan Pinisi Resto.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Situ Patenggang & Rancabali', 'situ.jpeg', 'Berada di Ciwidey, danau ini dikelilingi hamparan kebun teh hijau Rancabali. Pengunjung bisa menyewa perahu kayu atau mengunjungi spot glamping lakeside.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Situ+Patenggang+Ciwidey" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="tebing.jpeg" alt="Tebing Keraton" onclick="gambarBesar(this.src, 'Tebing Keraton')">
+                    <div class="card-content">
+                        <h2>Tebing Keraton</h2>
+                        <p>Spot tebing memukau untuk menikmati pemandangan matahari terbit dan hamparan hutan pinus Taman Hutan Raya Ir. H. Djuanda.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Tebing Keraton', 'tebing.jpeg', 'Terletak di Ciburial, Tebing Keraton menawarkan panorama kabut pagi dan pemandangan hijau membentang dari ketinggian.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Tebing+Keraton+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="market.jpeg" alt="Floating Market Lembang" onclick="gambarBesar(this.src, 'Floating Market Lembang')">
+                    <div class="card-content">
+                        <h2>Floating Market Lembang</h2>
+                        <p>Destinasi wisata kuliner unik di mana jajanan dijajakan di atas perahu terapung di tengah danau buatan.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Floating Market Lembang', 'market.jpeg', 'Menyediakan wahana kuliner terapung, penyewaan kostum Jepang & Korea, wahana air, serta area bermain ramah anak di Lembang.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Floating+Market+Lembang" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- KATEGORI 4: MALL & PUSAT BELANJA -->
+        <div class="kategori-section" id="mall">
+            <h2 class="kategori-title">Mall & Pusat Perbelanjaan</h2>
+            <div class="grid-container">
+
+                <div class="card">
+                    <img src="paris.jpeg" alt="Paris Van Java" onclick="gambarBesar(this.src, 'Paris Van Java')">
+                    <div class="card-content">
+                        <h2>Paris Van Java (PVJ)</h2>
+                        <p>Mall gaya hidup open-air / outdoor berkonsep eropa di Jalan Sukajadi lengkap dengan tenant internasional.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Paris Van Java (PVJ)', 'paris.jpeg', 'Paris Van Java menawarkan sensasi belanja luar ruangan yang sejuk, wahana ice skating, serta taman kebun mini zoo di rooftop.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Paris+Van+Java+Mall+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="paksal.jpeg" alt="23 Paskal" onclick="gambarBesar(this.src, '23 Paskal')">
+                    <div class="card-content">
+                        <h2>23 Paskal Shopping Center</h2>
+                        <p>Pusat perbelanjaan modern dan megah di kawasan Paskal Hyper Square dengan ragam fashion & kuliner terbaik.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('23 Paskal Shopping Center', 'paksal.jpeg', '23 Paskal adalah mal favorit di pusat kota yang menghadirkan bioskop CGV IMAX, store fashion terkemuka, serta food court indoor & outdoor.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=23+Paskal+Shopping+Center" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="tsm.jpeg" alt="Trans Studio Mall" onclick="gambarBesar(this.src, 'Trans Studio Mall')">
+                    <div class="card-content">
+                        <h2>Trans Studio Mall (TSM)</h2>
+                        <p>Mall kelas atas yang terhubung langsung dengan taman hiburan indoor raksasa Trans Studio Bandung.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Trans Studio Mall Bandung', 'tsm.jpeg', 'TSM Bandung menyajikan area belanja produk mewah, hotel bintang lima, serta wahana permainan indoor terbesar dalam satu kompleks.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Trans+Studio+Mall+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="wall.jpeg" alt="Cihampelas Walk" onclick="gambarBesar(this.src, 'Ciwalk')">
+                    <div class="card-content">
+                        <h2>Cihampelas Walk (Ciwalk)</h2>
+                        <p>Mall berkonsep green pedestrian yang menyatu dengan pepohonan hijau yang sejuk di kawasan Cihampelas.</p>
+                        <div class="card-buttons">
+                            <button class="btn btn-lihat" onclick="detail('Cihampelas Walk (Ciwalk)', 'wall.jpeg', 'Ciwalk memberikan suasana terbuka yang ramah pejalan kaki, dekat dengan pusat oleh-oleh pakaian di Jalan Cihampelas.')">Lihat</button>
+                            <a href="https://www.google.com/search?q=Cihampelas+Walk+Bandung" target="_blank" rel="noopener noreferrer" class="btn btn-google">Google</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL POPUP UNTUK DETAIL -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn-modal" onclick="tutupModal()">&times;</span>
+            <img id="modalGambar" src="" alt="Detail Gambar">
+            <div class="modal-body">
+                <h2 id="modalJudul"></h2>
+                <p id="modalDeskripsi"></p>
+                <a id="modalGoogleLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-google" style="display: inline-block; width: auto; padding: 10px 20px;">Penelusuran Google Lengkap</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Portal Informasi Kota Bandung. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. NAVIGASI SIDEBAR TOGGLE
+        function toggleSidebar() {
+            const sidebar = document.getElementById("mySidebar");
+            if (sidebar.style.width === "250px") {
+                sidebar.style.width = "0";
+            } else {
+                sidebar.style.width = "250px";
+            }
+        }
+
+        // 2. FITUR PENCARIAN TEPAT DI TENGAH (LIVE SEARCH)
+        function filterTempat() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.card');
+            const sections = document.querySelectorAll('.kategori-section');
+            const hasilPencarian = document.getElementById('hasilPencarian');
+            
+            let jumlahDitemukan = 0;
+
+            cards.forEach(card => {
+                const judul = card.querySelector('h2').textContent.toLowerCase();
+                const deskripsi = card.querySelector('p').textContent.toLowerCase();
+
+                if (judul.includes(query) || deskripsi.includes(query)) {
+                    card.style.display = 'flex';
+                    jumlahDitemukan++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            sections.forEach(section => {
+                const kartuDiSection = section.querySelectorAll('.card');
+                const adaKartuTampil = Array.from(kartuDiSection).some(c => c.style.display !== 'none');
+
+                if (query !== '' && !adaKartuTampil) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+
+            if (query === '') {
+                hasilPencarian.textContent = '';
+            } else {
+                hasilPencarian.textContent = `Ditemukan ${jumlahDitemukan} tempat untuk kata kunci: "${query}"`;
+            }
+        }
+
+        // 3. FITUR "LIHAT" (MODAL POPUP DETAIL)
+        function detail(judul, gambarSrc, deskripsi) {
+            const modalGambar = document.getElementById('modalGambar');
+            const modalGoogleLink = document.getElementById('modalGoogleLink');
+            
+            document.getElementById('modalJudul').textContent = judul;
+            modalGambar.src = gambarSrc;
+            modalGambar.alt = judul;
+            document.getElementById('modalDeskripsi').textContent = deskripsi;
+            
+            modalGoogleLink.href = `https://www.google.com/search?q=${encodeURIComponent(judul + " Bandung")}`;
+
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        // 4. PRATINJAU GAMBAR
+        function gambarBesar(gambarSrc, judul) {
+            detail(judul, gambarSrc, `Klik tombol "Penelusuran Google Lengkap" di bawah jika Anda ingin mencari artikel dan peta terkait lokasi ${judul}.`);
+        }
+
+        // 5. PENUTUPAN MODAL
+        function tutupModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                tutupModal();
+            }
+        };
+
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                tutupModal();
+            }
+        });
+    </script>
+</body>
+</html>
